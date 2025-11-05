@@ -7,14 +7,22 @@ class QueryString implements \Stringable
 {
 	private bool $separator = false;
 
+	/**
+	 * @param array<string, mixed> $params
+	 */
 	public function __construct(
 		private array $params,
 	) {
 	}
 
+	/**
+	 * @param array<string, mixed> $params
+	 * @return static
+	 */
 	public static function new(array $params = []): static
 	{
-		return new QueryString($params);
+		/** @phpstan-ignore-next-line */
+		return new static($params);
 	}
 
 	/**
@@ -29,6 +37,7 @@ class QueryString implements \Stringable
 
 	/**
 	 * Replace all params with supplied array
+	 * @param array<string, mixed> $params
 	 */
 	public function withParams(array $params): static
 	{

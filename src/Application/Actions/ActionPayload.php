@@ -8,6 +8,9 @@ use Nalgoo\Common\Application\Response\StatusCode;
 
 class ActionPayload implements JsonSerializable
 {
+	/**
+	 * @param array<mixed>|object|null $data
+	 */
 	public function __construct(
 		private int $statusCode = StatusCode::SUCCESS_OK,
 		private array|object|null $data = null,
@@ -20,6 +23,9 @@ class ActionPayload implements JsonSerializable
 		return $this->statusCode;
 	}
 
+	/**
+	 * @return array<mixed>|object|null
+	 */
 	public function getData(): array|object|null
 	{
 		return $this->data;
@@ -30,6 +36,9 @@ class ActionPayload implements JsonSerializable
 		return $this->error;
 	}
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function jsonSerialize(): array
 	{
 		$payload = [

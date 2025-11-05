@@ -13,6 +13,12 @@ use Symfony\Component\Serializer\Normalizer\PropertyNormalizer as BasePropertyNo
  **/
 class PropertyNormalizer extends BasePropertyNormalizer
 {
+	/**
+	 * @param mixed $object
+	 * @param string|null $format
+	 * @param array<string, mixed> $context
+	 * @return float|int|bool|string|null|array<mixed>|\ArrayObject<int|string, mixed>
+	 */
 	public function normalize($object, string $format = null, array $context = []): float|array|\ArrayObject|bool|int|string|null
 	{
 		if ($object instanceof Proxy && !$object->__isInitialized()) {
@@ -23,8 +29,13 @@ class PropertyNormalizer extends BasePropertyNormalizer
 	}
 
 	/**
-     * {@inheritdoc}
-     */
+	 * {@inheritdoc}
+	 * @param class-string|object $classOrObject
+	 * @param string $attribute
+	 * @param string|null $format
+	 * @param array<string, mixed> $context
+	 * @return bool
+	 */
     protected function isAllowedAttribute($classOrObject, string $attribute, string $format = null, array $context = []): bool
     {
 		if (is_subclass_of($classOrObject, Proxy::class) && str_starts_with($attribute, '__')) {

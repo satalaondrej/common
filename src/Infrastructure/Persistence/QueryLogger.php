@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Nalgoo\Common\Infrastructure\Persistence;
 
@@ -14,12 +15,14 @@ use Psr\Log\LogLevel;
  */
 class QueryLogger implements SQLLogger
 {
-	private ?float $start;
+	private float $start;
 
-	private ?string $sql;
+	private string $sql;
 
+	/** @var array<mixed>|null */
 	private ?array $params = null;
 
+	/** @var array<mixed>|null */
 	private ?array $types = null;
 
 	public function __construct(
@@ -29,6 +32,10 @@ class QueryLogger implements SQLLogger
 	{
 	}
 
+	/**
+	 * @param array<mixed>|null $params
+	 * @param array<mixed>|null $types
+	 */
 	public function startQuery($sql, ?array $params = null, ?array $types = null)
 	{
 		$this->sql = $sql;

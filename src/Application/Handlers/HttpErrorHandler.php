@@ -53,7 +53,6 @@ class HttpErrorHandler extends SlimErrorHandler
 
 		if (
 			!($exception instanceof HttpException)
-			&& ($exception instanceof Exception || $exception instanceof Throwable)
 			&& $this->displayErrorDetails
 		) {
 			$error->setDescription($exception->getMessage() . ' on ' . $exception->getFile() . ':' . $exception->getLine());
@@ -61,6 +60,10 @@ class HttpErrorHandler extends SlimErrorHandler
 
 		$payload = new ActionPayload($statusCode, null, $error);
 		$encodedPayload = json_encode($payload, JSON_PRETTY_PRINT);
+
+		if ($encodedPayload === false) {
+			$encodedPayload = '{"error":"Failed to encode error payload"}';
+		}
 
 		$response = $this->responseFactory->createResponse($statusCode);
 		$response->getBody()->write($encodedPayload);

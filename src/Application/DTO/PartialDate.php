@@ -34,8 +34,12 @@ class PartialDate
 
 	}
 
+	/**
+	 * @return static
+	 */
 	public static function fromDate(\DateTimeInterface $date): static
 	{
+		/** @phpstan-ignore-next-line */
 		return new static(
 			(int) $date->format('Y'),
 			(int) $date->format('n'),

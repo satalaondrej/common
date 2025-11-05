@@ -9,6 +9,7 @@ use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
+use Lcobucci\JWT\UnencryptedToken;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\Validator;
@@ -30,7 +31,7 @@ class ResourceServer
 	 * @throws OAuthScopeException
 	 * @throws OAuthTokenException
 	 */
-	public function getValidToken(ServerRequestInterface $request, ScopeInterface $requiredScope): Token
+	public function getValidToken(ServerRequestInterface $request, ScopeInterface $requiredScope): UnencryptedToken
 	{
 		$token = $this->validateToken($request);
 
@@ -42,7 +43,7 @@ class ResourceServer
 	/**
 	 * @throws OAuthScopeException
 	 */
-	protected function validateScope(Token $token, ScopeInterface $requiredScope): bool
+	protected function validateScope(UnencryptedToken $token, ScopeInterface $requiredScope): bool
 	{
 		$scopes = array_map(
 			fn ($scopeIdentifier) => new Scope($scopeIdentifier),
@@ -63,7 +64,7 @@ class ResourceServer
 	 *
 	 * @throws OAuthTokenException
 	 */
-	protected function validateToken(ServerRequestInterface $request): Token
+	protected function validateToken(ServerRequestInterface $request): UnencryptedToken
 	{
 		if ($request->hasHeader('authorization') === false) {
 			throw new OAuthTokenException('Missing "Authorization" header');
@@ -80,6 +81,10 @@ class ResourceServer
 			$token = (new Parser(new JoseEncoder()))->parse($jwt);
 		} catch (\Throwable $e) {
 			throw new OAuthTokenException('Cannot parse JWT token: ' . $e->getMessage());
+		}
+
+		if (!$token instanceof UnencryptedToken) {
+			throw new OAuthTokenException('Token is not an unencrypted token');
 		}
 
 		if (!$validator->validate($token, new SignedWith(new Sha256(), $this->publicKey))) {

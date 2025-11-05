@@ -40,11 +40,11 @@ class OAuthMiddleware implements MiddlewareInterface
 
 			$handlerClass = $this->getHandlerClass($route->getCallable());
 
-			if (!$this->implements($handlerClass, OAuthScopedInterface::class)) {
+			if ($handlerClass === null || !$this->implements($handlerClass, OAuthScopedInterface::class)) {
 				throw new \Exception('Handler does not implements OAuthScopedInterface');
 			}
 
-			/** @var OAuthScopedInterface $handlerClass */
+			/** @var class-string<OAuthScopedInterface> $handlerClass */
 			$requiredScope = $handlerClass::getRequiredScope();
 
 			$token = $this->resourceServer->getValidToken($request, $requiredScope);
@@ -79,12 +79,8 @@ class OAuthMiddleware implements MiddlewareInterface
 	{
 		$route = RouteContext::fromRequest($request)->getRoute();
 
-		if (!$route) {
-			throw new \Exception('Route attribute does not exist. Is routing middleware at the top of stack?');
-		}
-
 		if (!$route instanceof RouteInterface) {
-			throw new \Exception('Route attribute is not what it seems to be.');
+			throw new \Exception('Route attribute does not exist or is invalid. Is routing middleware at the top of stack?');
 		}
 
 		return $route;
@@ -93,7 +89,7 @@ class OAuthMiddleware implements MiddlewareInterface
 	/**
 	 * Get class name of provided callable, if it is existing class/object, or null if it is function or Closure
 	 *
-	 * @param array|string|callable $callable
+	 * @param array<mixed>|string|callable $callable
 	 */
 	private function getHandlerClass($callable): ?string
 	{

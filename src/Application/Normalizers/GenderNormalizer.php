@@ -13,6 +13,10 @@ class GenderNormalizer implements NormalizerInterface, DenormalizerInterface
 {
 	/**
 	 * @TODO int, bool, and regular text support
+	 * @param mixed $object
+	 * @param string|null $format
+	 * @param array<string, mixed> $context
+	 * @return string
 	 * @throws DomainLogicException
 	 */
 	public function normalize($object, string $format = null, array $context = []): string
@@ -24,6 +28,9 @@ class GenderNormalizer implements NormalizerInterface, DenormalizerInterface
 		return $object->toString();
 	}
 
+	/**
+	 * @return array<class-string, bool>
+	 */
 	public function getSupportedTypes(?string $format): array
 	{
 		return [
@@ -31,11 +38,23 @@ class GenderNormalizer implements NormalizerInterface, DenormalizerInterface
 		];
 	}
 
+	/**
+	 * @param mixed $data
+	 * @param string|null $format
+	 * @return bool
+	 */
 	public function supportsNormalization($data, string $format = null): bool
 	{
 		return $data instanceof Gender;
 	}
 
+	/**
+	 * @param mixed $data
+	 * @param string $type
+	 * @param string|null $format
+	 * @param array<string, mixed> $context
+	 * @return Gender
+	 */
 	public function denormalize($data, $type, $format = null, array $context = []): Gender
 	{
 		if (!$this->supportsDenormalization($data, $type)) {
@@ -45,6 +64,12 @@ class GenderNormalizer implements NormalizerInterface, DenormalizerInterface
 		return Gender::fromValue($data);
 	}
 
+	/**
+	 * @param mixed $data
+	 * @param string $type
+	 * @param string|null $format
+	 * @return bool
+	 */
 	public function supportsDenormalization($data, $type, $format = null): bool
 	{
 		return (is_string($data) || is_int($data) || is_bool($data)) && $type === Gender::class;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Nalgoo\Common\Infrastructure\Persistence\DoctrineTypes;
 
@@ -15,7 +16,8 @@ class CsvArrayType extends SimpleArrayType
 			return null;
 		}
 
-		return $this->toCsv($value);
+		$result = $this->toCsv($value);
+		return is_string($result) ? $result : null;
 	}
 
 	/**
@@ -29,7 +31,12 @@ class CsvArrayType extends SimpleArrayType
 
 		$value = is_resource($value) ? stream_get_contents($value) : $value;
 
-		return $this->fromCsv($value);
+		if ($value === false) {
+			return [];
+		}
+
+		$result = $this->fromCsv($value);
+		return is_array($result) ? array_values($result) : [];
 	}
 
 	/**
@@ -40,9 +47,16 @@ class CsvArrayType extends SimpleArrayType
 		return self::NAME;
 	}
 
+	/**
+	 * @param string[] $data
+	 */
 	private function toCsv(array $data): bool|string
 	{
 		$buffer = fopen('php://memory', 'r+');
+
+		if ($buffer === false) {
+			return false;
+		}
 
 		fputcsv($buffer, $data);
 		rewind($buffer);
@@ -52,15 +66,28 @@ class CsvArrayType extends SimpleArrayType
 		return $formatted;
 	}
 
+	/**
+	 * @return string[]|false
+	 */
 	private function fromCsv(string $s): bool|array
 	{
 		$buffer = fopen('php://memory', 'r+');
+
+		if ($buffer === false) {
+			return false;
+		}
 
 		fwrite($buffer, $s);
 		rewind($buffer);
 		$data = fgetcsv($buffer);
 		fclose($buffer);
-		return $data;
+
+		if ($data === false) {
+			return false;
+		}
+
+		/** @var string[] */
+		return array_map(fn($item) => (string) $item, $data);
 	}
 
 }

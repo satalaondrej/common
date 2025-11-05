@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 abstract class ActionFactory implements ActionFactoryInterface
 {
+    /** @var array<string, UrlResolverInterface> */
     protected array $urlResolvers = [];
 
     public function __construct(

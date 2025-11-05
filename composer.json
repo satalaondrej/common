@@ -31,6 +31,14 @@
     }
   },
   "config": {
-	"sort-packages": true
+	"sort-packages": true,
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
+  },
+  "require-dev": {
+    "phpstan/extension-installer": "*",
+    "phpstan/phpstan": "*",
+    "phpstan/phpstan-doctrine": "*"
   }
 }

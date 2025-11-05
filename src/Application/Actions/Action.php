@@ -24,6 +24,7 @@ abstract class Action
 
 	protected Response $response;
 
+	/** @var array<string, mixed> */
 	protected array $args;
 
 	public function __construct(
@@ -33,6 +34,7 @@ abstract class Action
 	}
 
 	/**
+	 * @param array<string, mixed> $args
 	 * @throws HttpNotFoundException
 	 * @throws HttpBadRequestException
 	 */
@@ -68,6 +70,7 @@ abstract class Action
 	}
 
 	/**
+	 * @return array<mixed>
 	 * @throws HttpBadRequestException
 	 */
 	protected function getJson(): array
@@ -89,7 +92,8 @@ abstract class Action
 
 	/**
 	 * @template TObject of object
-	 * @return ($className is class-string<TObject> ? TObject : array)
+	 * @param class-string<TObject> $className
+	 * @return TObject|array<mixed>
 	 * @throws HttpBadRequestException
 	 */
 	protected function deserializeBody(string $className): object|array
@@ -117,7 +121,10 @@ abstract class Action
 			->withHeader('location', $uri);
 	}
 
-	protected function respondWithJson($data, int $statusCode = StatusCode::SUCCESS_OK, ?array $groups = null): Response
+	/**
+	 * @param array<string>|null $groups
+	 */
+	protected function respondWithJson(mixed $data, int $statusCode = StatusCode::SUCCESS_OK, ?array $groups = null): Response
 	{
 		if (!is_null($groups)) {
 			Assert::allStringNotEmpty($groups, 'Serializer groups must be array of strings!');
@@ -152,6 +159,10 @@ abstract class Action
 		return array_key_exists($cookieName, $cookies) ? $cookies[$cookieName] : $default;
 	}
 
+	/**
+	 * @param array<mixed>|string|null $default
+	 * @return array<mixed>|string|null
+	 */
 	protected function getQuery(string $queryParamName, array|string|null $default = null): array|string|null
 	{
 		$queryParams = $this->request->getQueryParams();
@@ -161,6 +172,7 @@ abstract class Action
 
 	/**
 	 * Creates URI with given path (either absolute or relative) based on request's base URL
+	 * @param array<string, mixed> $queryParams
 	 */
 	protected function resolveUrl(string $path, array $queryParams = []): string
 	{

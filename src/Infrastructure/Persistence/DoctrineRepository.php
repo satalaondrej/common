@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Nalgoo\Common\Infrastructure\Persistence;
 
@@ -49,6 +50,10 @@ abstract class DoctrineRepository
 	 * Find and return all entities matching criteria, return empty array if no entity matches given criteria
 	 * @template TObject of object
 	 * @param class-string<TObject> $entityClassName
+	 * @param array<string, mixed> $criteria
+	 * @param array<string, string>|null $orderBy
+	 * @param int|null $limit
+	 * @param int|null $offset
 	 * @return TObject[]
 	 *
 	 * @throws Exceptions\ConnectionException
@@ -58,11 +63,12 @@ abstract class DoctrineRepository
 		string $entityClassName,
 		array $criteria,
 		?array $orderBy = null,
-		int $limit = null,
-		int $offset = null
+		?int $limit = null,
+		?int $offset = null
 	): array
 	{
 		try {
+			/** @var TObject[] */
 			return $this->entityManager->getRepository($entityClassName)->findBy($criteria, $orderBy, $limit, $offset);
 		} catch (\Throwable $e) {
 			throw PersistenceException::from($e);
@@ -73,6 +79,8 @@ abstract class DoctrineRepository
 	 * Find and return first entity matching given criteria, return null if no entity matches given criteria
 	 * @template TObject of object
 	 * @param class-string<TObject> $entityClassName
+	 * @param array<string, mixed> $criteria
+	 * @param array<string, string>|null $orderBy
 	 * @return TObject|null
 	 *
 	 * @throws Exceptions\ConnectionException
@@ -81,6 +89,7 @@ abstract class DoctrineRepository
 	protected function findOneBy(string $entityClassName, array $criteria, ?array $orderBy = null): ?object
 	{
 		try {
+			/** @var TObject|null */
 			return $this->entityManager->getRepository($entityClassName)->findOneBy($criteria, $orderBy);
 		} catch (\Throwable $e) {
 			throw PersistenceException::from($e);
@@ -114,6 +123,9 @@ abstract class DoctrineRepository
 		}
 	}
 
+	/**
+	 * @param array<string, mixed> $params
+	 */
 	protected function queryDql(string $dql, array $params = [], ?int $limit = null, int $offset = 0): mixed
 	{
 		$query = $this->entityManager->createQuery($dql);
@@ -133,6 +145,9 @@ abstract class DoctrineRepository
 		return $query->getResult();
 	}
 
+	/**
+	 * @param array<string, mixed> $params
+	 */
 	protected function querySingleScalarDql(string $dql, array $params = []): mixed
 	{
 		$query = $this->entityManager->createQuery($dql);

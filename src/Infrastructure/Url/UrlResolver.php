@@ -16,6 +16,9 @@ class UrlResolver implements UrlResolverInterface
 	{
 	}
 
+	/**
+	 * @param array<string, mixed> $queryParams
+	 */
 	public function resolveUrl(string|\Stringable $path, array $queryParams = []): string
 	{
 		$uri = self::versionAwareCreateUri($path, $this->request->getUri());
@@ -32,9 +35,12 @@ class UrlResolver implements UrlResolverInterface
 
 	private static function versionAwareCreateUri(string|\Stringable $uri, UriInterface $baseUri): Uri
 	{
+		// League URI v7+ uses fromBaseUri, v6 uses createFromBaseUri
+		// @phpstan-ignore-next-line function.alreadyNarrowedType (backward compatibility check)
 		if (method_exists(Uri::class, 'fromBaseUri')) {
 			return Uri::fromBaseUri($uri, $baseUri);
 		}
+		// @phpstan-ignore-next-line method.notFound
 		return Uri::createFromBaseUri($uri, $baseUri);
 	}
 }

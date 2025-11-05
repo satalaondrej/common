@@ -24,6 +24,9 @@ class DoctrineCollectionNormalizer implements NormalizerInterface, NormalizerAwa
 	{
 	}
 
+	/**
+	 * @return array<class-string, bool>
+	 */
 	public function getSupportedTypes(?string $format): array
 	{
 		return [
@@ -31,6 +34,12 @@ class DoctrineCollectionNormalizer implements NormalizerInterface, NormalizerAwa
 		];
 	}
 
+	/**
+	 * @param mixed $object
+	 * @param string|null $format
+	 * @param array<string, mixed> $context
+	 * @return mixed
+	 */
 	public function normalize($object, string $format = null, array $context = []): mixed
 	{
 		if (!$this->supportsNormalization($object, $format, $context)) {
@@ -40,6 +49,12 @@ class DoctrineCollectionNormalizer implements NormalizerInterface, NormalizerAwa
 		return $this->normalizer->normalize($object->getValues(), $format, $context);
 	}
 
+	/**
+	 * @param mixed $data
+	 * @param string|null $format
+	 * @param array<string, mixed> $context
+	 * @return bool
+	 */
 	public function supportsNormalization($data, string $format = null, array $context = []): bool
 	{
 		return ($context[static::SERIALIZE_COLLECTION_WITHOUT_KEYS] ?? $this->useAsDefault) && $data instanceof Collection;
