@@ -18,6 +18,9 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 		Assert::oneOf($value, static::getConstants());
 	}
 
+	/**
+	 * @return array<int|string|bool>
+	 */
 	protected static function getConstants(): array
 	{
 		$reflection = new \ReflectionClass(static::class);
@@ -25,7 +28,7 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 		return array_values($reflection->getConstants(ReflectionClassConstant::IS_PUBLIC));
 	}
 
-	protected static function getInstanceFor($value): static
+	protected static function getInstanceFor(string|int|bool $value): static
 	{
 		static $instances = [];
 
