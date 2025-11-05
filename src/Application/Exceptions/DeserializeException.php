@@ -5,5 +5,4 @@ namespace Nalgoo\Common\Application\Exceptions;
 
 class DeserializeException extends ApplicationException
 {
-
 }

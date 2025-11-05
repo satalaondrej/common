@@ -7,9 +7,8 @@ class NamedValue
 {
 	public function __construct(
 		protected \BackedEnum $name,
-		protected mixed $value
-	)
-	{
+		protected mixed $value,
+	) {
 	}
 
 	public function getName(): \BackedEnum

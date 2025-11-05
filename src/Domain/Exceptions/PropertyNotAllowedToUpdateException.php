@@ -5,5 +5,4 @@ namespace Nalgoo\Common\Domain\Exceptions;
 
 class PropertyNotAllowedToUpdateException extends DomainLogicException
 {
-
 }

@@ -5,5 +5,4 @@ namespace Nalgoo\Common\Application\Middleware\Exceptions;
 
 class ApiKeyNotSetException extends ApiKeyMiddlewareException
 {
-
 }

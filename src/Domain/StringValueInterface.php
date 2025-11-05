@@ -4,7 +4,7 @@ namespace Nalgoo\Common\Domain;
 
 interface StringValueInterface
 {
-    public static function fromString(string $value): static;
+	public static function fromString(string $value): static;
 
-    public function toString(): string;
+	public function toString(): string;
 }

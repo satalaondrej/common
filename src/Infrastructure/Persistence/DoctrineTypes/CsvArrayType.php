@@ -17,12 +17,10 @@ class CsvArrayType extends SimpleArrayType
 		}
 
 		$result = $this->toCsv($value);
+
 		return is_string($result) ? $result : null;
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
 	public function convertToPHPValue($value, AbstractPlatform $platform)
 	{
 		if ($value === null) {
@@ -36,12 +34,10 @@ class CsvArrayType extends SimpleArrayType
 		}
 
 		$result = $this->fromCsv($value);
+
 		return is_array($result) ? array_values($result) : [];
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
 	public function getName(): string
 	{
 		return self::NAME;
@@ -87,7 +83,6 @@ class CsvArrayType extends SimpleArrayType
 		}
 
 		/** @var string[] */
-		return array_map(fn($item) => (string) $item, $data);
+		return array_map(fn ($item) => (string) $item, $data);
 	}
-
 }

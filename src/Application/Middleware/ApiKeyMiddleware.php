@@ -12,14 +12,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Used for routes with elemental string api key
- * DO NOT USE FOR ROUTES WITH SENSITIVE INFORMATION
+ * DO NOT USE FOR ROUTES WITH SENSITIVE INFORMATION.
  **/
 class ApiKeyMiddleware implements MiddlewareInterface
 {
 	public function __construct(
-		protected string $apiKey
-	)
-	{
+		protected string $apiKey,
+	) {
 	}
 
 	/**
@@ -38,11 +37,11 @@ class ApiKeyMiddleware implements MiddlewareInterface
 		throw new ApiKeyNotSetException('API key not set !');
 	}
 
-    /**
-     * @throws ApiKeyNotSetException
-     * @throws InvalidApiKeyException
-     */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+	/**
+	 * @throws ApiKeyNotSetException
+	 * @throws InvalidApiKeyException
+	 */
+	public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
 	{
 		if ($this->getRequestApiKey($request) !== $this->apiKey) {
 			throw new InvalidApiKeyException('Invalid api key!');

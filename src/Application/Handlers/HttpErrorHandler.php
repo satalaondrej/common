@@ -5,7 +5,6 @@ namespace Nalgoo\Common\Application\Handlers;
 
 use Nalgoo\Common\Application\Actions\ActionError;
 use Nalgoo\Common\Application\Actions\ActionPayload;
-use Exception;
 use Nalgoo\Common\Application\Response\StatusCode;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Exception\HttpBadRequestException;
@@ -16,13 +15,9 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Exception\HttpNotImplementedException;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
-use Throwable;
 
 class HttpErrorHandler extends SlimErrorHandler
 {
-	/**
-	 * @inheritdoc
-	 */
 	protected function respond(): Response
 	{
 		$exception = $this->exception;
@@ -55,7 +50,7 @@ class HttpErrorHandler extends SlimErrorHandler
 			!($exception instanceof HttpException)
 			&& $this->displayErrorDetails
 		) {
-			$error->setDescription($exception->getMessage() . ' on ' . $exception->getFile() . ':' . $exception->getLine());
+			$error->setDescription($exception->getMessage().' on '.$exception->getFile().':'.$exception->getLine());
 		}
 
 		$payload = new ActionPayload($statusCode, null, $error);
@@ -72,7 +67,7 @@ class HttpErrorHandler extends SlimErrorHandler
 	}
 
 	/**
-	 * copy & paste, but removed "Tips"
+	 * copy & paste, but removed "Tips".
 	 */
 	protected function writeToErrorLog(): void
 	{

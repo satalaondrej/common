@@ -8,15 +8,14 @@ use Nalgoo\Common\Infrastructure\Persistence\Exceptions\UniqueConstraintViolatio
 class Persister
 {
 	public function __construct(
-		private EntityManager $entityManager
-	)
-	{
+		private EntityManager $entityManager,
+	) {
 	}
 
 	/**
-	 * @return mixed
 	 * @throws PersistenceException
 	 * @throws UniqueConstraintViolationException
+	 *
 	 * @noinspection PhpUnhandledExceptionInspection
 	 */
 	public function transaction(callable $func): mixed
@@ -40,5 +39,4 @@ class Persister
 			throw PersistenceException::from($e);
 		}
 	}
-
 }

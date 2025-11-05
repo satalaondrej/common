@@ -5,5 +5,4 @@ namespace Nalgoo\Common\Application\Exceptions;
 
 class ApplicationException extends \Exception
 {
-
 }

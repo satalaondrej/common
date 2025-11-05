@@ -10,7 +10,6 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class IdentifierNormalizer implements DenormalizerInterface
 {
-
 	/**
 	 * @return array<class-string, bool>
 	 */
@@ -23,13 +22,11 @@ class IdentifierNormalizer implements DenormalizerInterface
 	}
 
 	/**
-	 * @param mixed $data
-	 * @param string $type
-	 * @param string|null $format
 	 * @param array<string, mixed> $context
+	 *
 	 * @return StringIdentifier|IntegerIdentifier
 	 */
-	public function denormalize($data, string $type, string $format = null, array $context = [])
+	public function denormalize($data, string $type, ?string $format = null, array $context = [])
 	{
 		if (!$this->supportsDenormalization($data, $type)) {
 			throw new InvalidArgumentException();
@@ -38,13 +35,7 @@ class IdentifierNormalizer implements DenormalizerInterface
 		return new $type($data);
 	}
 
-	/**
-	 * @param mixed $data
-	 * @param string $type
-	 * @param string|null $format
-	 * @return bool
-	 */
-	public function supportsDenormalization($data, string $type, string $format = null): bool
+	public function supportsDenormalization($data, string $type, ?string $format = null): bool
 	{
 		return (is_subclass_of($type, StringIdentifier::class) && is_string($data))
 			|| (is_subclass_of($type, IntegerIdentifier::class) && is_int($data));

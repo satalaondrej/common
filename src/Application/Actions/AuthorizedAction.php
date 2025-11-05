@@ -45,7 +45,8 @@ abstract class AuthorizedAction extends Action implements OAuthScopedInterface
 	}
 
 	/**
-	 * Return "sub" claim from oAuth token or throw AuthorizationException if not set or empty
+	 * Return "sub" claim from oAuth token or throw AuthorizationException if not set or empty.
+	 *
 	 * @deprecated use getAuthorizedSubject()
 	 */
 	protected function getAuthorizedUserId(): string
@@ -55,6 +56,7 @@ abstract class AuthorizedAction extends Action implements OAuthScopedInterface
 
 	/**
 	 * @return array<string>
+	 *
 	 * @deprecated use getAuthorizedScopes()
 	 */
 	protected function getRequestedScopes(): array

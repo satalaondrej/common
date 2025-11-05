@@ -37,7 +37,7 @@ class UpdateInput
 	public function getUpdatedProperties(): array
 	{
 		return array_map(
-			fn(\BackedEnum $property) => new NamedValue($property, $this->{$property->value}),
+			fn (\BackedEnum $property) => new NamedValue($property, $this->{$property->value}),
 			$this->updatedProperties,
 		);
 	}

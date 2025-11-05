@@ -7,5 +7,4 @@ use Nalgoo\Common\Infrastructure\Persistence\PersistenceException;
 
 class UniqueConstraintViolationException extends PersistenceException
 {
-
 }

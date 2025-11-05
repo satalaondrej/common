@@ -14,9 +14,8 @@ class ResourceServerConfig
 	public function __construct(
 		string $hostName,
 		private bool $secure = true,
-		private ?int $port = null
-	)
-	{
+		private ?int $port = null,
+	) {
 		$this->host = trim($hostName, '/');
 	}
 
@@ -36,15 +35,14 @@ class ResourceServerConfig
 
 	public function getScopeBaseUrl(): string
 	{
-		return $this->getSchemeAndAuthority() . '/' . $this->scopePathPrefix;
+		return $this->getSchemeAndAuthority().'/'.$this->scopePathPrefix;
 	}
 
 	private function getSchemeAndAuthority(): string
 	{
 		return ($this->secure ? 'https' : 'http')
-			. '://'
-			. $this->host
-			. ($this->port ? (':' . strval($this->port)) : '');
+			.'://'
+			.$this->host
+			.($this->port ? (':'.strval($this->port)) : '');
 	}
-
 }

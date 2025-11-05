@@ -27,9 +27,8 @@ class QueryLogger implements SQLLogger
 
 	public function __construct(
 		protected LoggerInterface $logger,
-		protected string $logLevel = LogLevel::DEBUG
-	)
-	{
+		protected string $logLevel = LogLevel::DEBUG,
+	) {
 	}
 
 	/**
@@ -65,5 +64,4 @@ class QueryLogger implements SQLLogger
 			);
 		}
 	}
-
 }

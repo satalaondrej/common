@@ -1,22 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$format \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
-			count: 2
+			message: '#^Method Nalgoo\\Common\\Application\\Normalizers\\DoctrineCollectionNormalizer\:\:normalize\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
 			path: src/Application/Normalizers/DoctrineCollectionNormalizer.php
 
 		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$format \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
-			count: 2
-			path: src/Application/Normalizers/GenderNormalizer.php
-
-		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#3 \$format \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
-			count: 2
-			path: src/Application/Normalizers/IdentifierNormalizer.php
+			message: '#^Method Nalgoo\\Common\\Application\\Normalizers\\DoctrineCollectionNormalizer\:\:normalize\(\) return type with generic class ArrayObject does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Application/Normalizers/DoctrineCollectionNormalizer.php
 
 		-
 			message: '#^Method Nalgoo\\Common\\Application\\Normalizers\\IdentifierNormalizer\:\:denormalize\(\) should return Nalgoo\\Common\\Domain\\IntegerIdentifier\|Nalgoo\\Common\\Domain\\StringIdentifier but returns object\.$#'
@@ -45,18 +39,6 @@ parameters:
 		-
 			message: '#^Class Nalgoo\\Common\\Application\\Normalizers\\PropertyNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\PropertyNormalizer\.$#'
 			identifier: class.extendsFinalByPhpDoc
-			count: 1
-			path: src/Application/Normalizers/PropertyNormalizer.php
-
-		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$format \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
-			count: 1
-			path: src/Application/Normalizers/PropertyNormalizer.php
-
-		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#3 \$format \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Application/Normalizers/PropertyNormalizer.php
 

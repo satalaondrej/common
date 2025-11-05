@@ -46,5 +46,4 @@ class ReverseProxyMiddleware implements MiddlewareInterface
 
 		return $handler->handle($request);
 	}
-
 }

@@ -8,5 +8,4 @@ interface ScopeInterface
 	public function getIdentifier(): string;
 
 	public function isSatisfiedBy(ScopeInterface $scope): bool;
-
 }

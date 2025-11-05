@@ -7,5 +7,4 @@ use Nalgoo\Common\Application\Exceptions\AuthorizationException;
 
 class ApiKeyMiddlewareException extends AuthorizationException
 {
-
 }

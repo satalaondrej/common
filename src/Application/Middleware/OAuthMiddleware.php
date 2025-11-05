@@ -21,9 +21,8 @@ class OAuthMiddleware implements MiddlewareInterface
 	private const CLASS_NAME_REGEX = '[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*';
 
 	public function __construct(
-		private ResourceServer $resourceServer
-	)
-	{
+		private ResourceServer $resourceServer,
+	) {
 	}
 
 	/**
@@ -71,7 +70,7 @@ class OAuthMiddleware implements MiddlewareInterface
 	}
 
 	/**
-	 * Get route object from request
+	 * Get route object from request.
 	 *
 	 * @throws \Exception
 	 */
@@ -87,7 +86,7 @@ class OAuthMiddleware implements MiddlewareInterface
 	}
 
 	/**
-	 * Get class name of provided callable, if it is existing class/object, or null if it is function or Closure
+	 * Get class name of provided callable, if it is existing class/object, or null if it is function or Closure.
 	 *
 	 * @param array<mixed>|string|callable $callable
 	 */
@@ -111,7 +110,7 @@ class OAuthMiddleware implements MiddlewareInterface
 				return $callable;
 			}
 
-			if (preg_match('/^('.self::CLASS_NAME_REGEX.')::.+$/', $callable, $matches) ) {
+			if (preg_match('/^('.self::CLASS_NAME_REGEX.')::.+$/', $callable, $matches)) {
 				if (class_exists($matches[1])) {
 					return $matches[1];
 				}
@@ -125,5 +124,4 @@ class OAuthMiddleware implements MiddlewareInterface
 
 		return null;
 	}
-
 }

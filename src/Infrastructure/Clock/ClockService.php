@@ -12,14 +12,13 @@ class ClockService
 
 	public function getTimeMinutesAgo(int $minutes): \DateTimeImmutable
 	{
-		/** @noinspection PhpUnhandledExceptionInspection */
+		/* @noinspection PhpUnhandledExceptionInspection */
 		return (new \DateTimeImmutable())->sub(new \DateInterval(sprintf('PT%dM', $minutes)));
 	}
 
 	public function getTimeMinutesAhead(int $minutes): \DateTimeImmutable
 	{
-		/** @noinspection PhpUnhandledExceptionInspection */
+		/* @noinspection PhpUnhandledExceptionInspection */
 		return (new \DateTimeImmutable())->add(new \DateInterval(sprintf('PT%dM', $minutes)));
 	}
-
 }

@@ -9,17 +9,19 @@ use Doctrine\ORM\Query;
 abstract class DoctrineRepository
 {
 	public function __construct(
-		protected EntityManager $entityManager
-	)
-	{
+		protected EntityManager $entityManager,
+	) {
 	}
 
 	/**
-	 * Find Entity by its primary key, return null if entity does not exist
+	 * Find Entity by its primary key, return null if entity does not exist.
+	 *
 	 * @template TObject of object
+	 *
 	 * @param class-string<TObject> $entityClassName
-	 * @param mixed $primaryKey
+	 *
 	 * @return TObject|null
+	 *
 	 * @throws Exceptions\ConnectionException
 	 * @throws PersistenceException
 	 */
@@ -33,9 +35,12 @@ abstract class DoctrineRepository
 	}
 
 	/**
-	 * Find and return all entities from repository
+	 * Find and return all entities from repository.
+	 *
 	 * @template TObject of object
+	 *
 	 * @param class-string<TObject> $entityClassName
+	 *
 	 * @return TObject[]
 	 *
 	 * @throws Exceptions\ConnectionException
@@ -47,13 +52,14 @@ abstract class DoctrineRepository
 	}
 
 	/**
-	 * Find and return all entities matching criteria, return empty array if no entity matches given criteria
+	 * Find and return all entities matching criteria, return empty array if no entity matches given criteria.
+	 *
 	 * @template TObject of object
-	 * @param class-string<TObject> $entityClassName
-	 * @param array<string, mixed> $criteria
+	 *
+	 * @param class-string<TObject>      $entityClassName
+	 * @param array<string, mixed>       $criteria
 	 * @param array<string, string>|null $orderBy
-	 * @param int|null $limit
-	 * @param int|null $offset
+	 *
 	 * @return TObject[]
 	 *
 	 * @throws Exceptions\ConnectionException
@@ -64,9 +70,8 @@ abstract class DoctrineRepository
 		array $criteria,
 		?array $orderBy = null,
 		?int $limit = null,
-		?int $offset = null
-	): array
-	{
+		?int $offset = null,
+	): array {
 		try {
 			/** @var TObject[] */
 			return $this->entityManager->getRepository($entityClassName)->findBy($criteria, $orderBy, $limit, $offset);
@@ -76,11 +81,14 @@ abstract class DoctrineRepository
 	}
 
 	/**
-	 * Find and return first entity matching given criteria, return null if no entity matches given criteria
+	 * Find and return first entity matching given criteria, return null if no entity matches given criteria.
+	 *
 	 * @template TObject of object
-	 * @param class-string<TObject> $entityClassName
-	 * @param array<string, mixed> $criteria
+	 *
+	 * @param class-string<TObject>      $entityClassName
+	 * @param array<string, mixed>       $criteria
 	 * @param array<string, string>|null $orderBy
+	 *
 	 * @return TObject|null
 	 *
 	 * @throws Exceptions\ConnectionException
@@ -158,5 +166,4 @@ abstract class DoctrineRepository
 
 		return $query->getResult(Query::HYDRATE_SINGLE_SCALAR);
 	}
-
 }

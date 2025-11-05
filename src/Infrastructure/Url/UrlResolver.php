@@ -11,9 +11,8 @@ use Psr\Http\Message\UriInterface;
 class UrlResolver implements UrlResolverInterface
 {
 	public function __construct(
-		private RequestInterface $request
-	)
-	{
+		private RequestInterface $request,
+	) {
 	}
 
 	/**
@@ -40,6 +39,7 @@ class UrlResolver implements UrlResolverInterface
 		if (method_exists(Uri::class, 'fromBaseUri')) {
 			return Uri::fromBaseUri($uri, $baseUri);
 		}
+
 		// @phpstan-ignore-next-line method.notFound
 		return Uri::createFromBaseUri($uri, $baseUri);
 	}

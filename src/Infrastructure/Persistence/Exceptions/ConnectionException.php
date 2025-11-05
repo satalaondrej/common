@@ -7,5 +7,4 @@ use Nalgoo\Common\Infrastructure\Persistence\PersistenceException;
 
 class ConnectionException extends PersistenceException
 {
-
 }

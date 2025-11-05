@@ -8,11 +8,10 @@ use Slim\ResponseEmitter;
 
 class ShutdownHandler
 {
-
 	public function __construct(
 		private Request $request,
 		private HttpErrorHandler $errorHandler,
-		private bool $displayErrorDetails
+		private bool $displayErrorDetails,
 	) {
 	}
 
@@ -28,5 +27,4 @@ class ShutdownHandler
 			$responseEmitter->emit($response);
 		}
 	}
-
 }

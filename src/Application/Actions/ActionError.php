@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace Nalgoo\Common\Application\Actions;
 
-use JsonSerializable;
-
-class ActionError implements JsonSerializable
+class ActionError implements \JsonSerializable
 {
 	public const BAD_REQUEST = 'BAD_REQUEST';
 	public const INSUFFICIENT_PRIVILEGES = 'INSUFFICIENT_PRIVILEGES';
@@ -17,12 +15,10 @@ class ActionError implements JsonSerializable
 	public const VALIDATION_ERROR = 'VALIDATION_ERROR';
 	public const VERIFICATION_ERROR = 'VERIFICATION_ERROR';
 
-
 	public function __construct(
 		private string $type,
-		private ?string $description
-	)
-	{
+		private ?string $description,
+	) {
 	}
 
 	public function getType(): string
@@ -33,6 +29,7 @@ class ActionError implements JsonSerializable
 	public function setType(string $type): static
 	{
 		$this->type = $type;
+
 		return $this;
 	}
 
@@ -44,6 +41,7 @@ class ActionError implements JsonSerializable
 	public function setDescription(?string $description = null): static
 	{
 		$this->description = $description;
+
 		return $this;
 	}
 

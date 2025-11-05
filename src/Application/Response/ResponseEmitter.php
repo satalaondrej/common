@@ -14,9 +14,6 @@ class ResponseEmitter extends SlimResponseEmitter
 		parent::__construct();
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
 	public function emit(ResponseInterface $response): void
 	{
 		// This variable should be set to the allowed host from which your API can be accessed with

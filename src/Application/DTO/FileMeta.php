@@ -11,7 +11,8 @@ class FileMeta implements FileMetaInterface
 		private readonly string $name,
 		private readonly int $size,
 		private readonly string $contentType,
-	) {}
+	) {
+	}
 
 	public function getName(): string
 	{

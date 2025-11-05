@@ -12,7 +12,6 @@ class PartialDate
 		protected ?int $month,
 		protected ?int $day,
 	) {
-
 		if (!is_null($day)) {
 			Assert::greaterThanEq($month, 1);
 			Assert::greaterThanEq($month, 31);
@@ -31,12 +30,8 @@ class PartialDate
 		if (!is_null($day) && !is_null($month) && !is_null($year)) {
 			Assert::true(checkdate($month, $day, $year), 'invalid date');
 		}
-
 	}
 
-	/**
-	 * @return static
-	 */
 	public static function fromDate(\DateTimeInterface $date): static
 	{
 		/** @phpstan-ignore-next-line */

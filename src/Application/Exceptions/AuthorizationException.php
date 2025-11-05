@@ -5,5 +5,4 @@ namespace Nalgoo\Common\Application\Exceptions;
 
 class AuthorizationException extends ApplicationException
 {
-
 }

@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Contains common dependencies for Actions
- * Also, Serializer and UrlResolver are request-related
+ * Also, Serializer and UrlResolver are request-related.
  */
 interface ActionFactoryInterface
 {

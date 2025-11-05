@@ -5,5 +5,4 @@ namespace Nalgoo\Common\Infrastructure\OAuth\Exceptions;
 
 class OAuthAudienceException extends OAuthException
 {
-
 }

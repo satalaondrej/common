@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalizes doctrine collection into arrays without keys
+ * Normalizes doctrine collection into arrays without keys.
  */
 class DoctrineCollectionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
@@ -19,9 +19,8 @@ class DoctrineCollectionNormalizer implements NormalizerInterface, NormalizerAwa
 	public const SERIALIZE_COLLECTION_WITHOUT_KEYS = 'serialize-collection-without-keys';
 
 	public function __construct(
-		protected bool $useAsDefault = true
-	)
-	{
+		protected bool $useAsDefault = true,
+	) {
 	}
 
 	/**
@@ -30,17 +29,14 @@ class DoctrineCollectionNormalizer implements NormalizerInterface, NormalizerAwa
 	public function getSupportedTypes(?string $format): array
 	{
 		return [
-			Collection::class => $this->useAsDefault
+			Collection::class => $this->useAsDefault,
 		];
 	}
 
 	/**
-	 * @param mixed $object
-	 * @param string|null $format
 	 * @param array<string, mixed> $context
-	 * @return mixed
 	 */
-	public function normalize($object, string $format = null, array $context = []): mixed
+	public function normalize($object, ?string $format = null, array $context = []): mixed
 	{
 		if (!$this->supportsNormalization($object, $format, $context)) {
 			throw new InvalidArgumentException('The object must be instance of doctrine Collection!');
@@ -50,12 +46,9 @@ class DoctrineCollectionNormalizer implements NormalizerInterface, NormalizerAwa
 	}
 
 	/**
-	 * @param mixed $data
-	 * @param string|null $format
 	 * @param array<string, mixed> $context
-	 * @return bool
 	 */
-	public function supportsNormalization($data, string $format = null, array $context = []): bool
+	public function supportsNormalization($data, ?string $format = null, array $context = []): bool
 	{
 		return ($context[static::SERIALIZE_COLLECTION_WITHOUT_KEYS] ?? $this->useAsDefault) && $data instanceof Collection;
 	}

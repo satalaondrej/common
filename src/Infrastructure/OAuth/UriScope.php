@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  * https://example.com/dir1/dir2/some.thing.nice
  * \-----------------/\--------/\--------------/
  *           |            |             |
- *        host    scope path prefix   scope detailed with dots
+ *        host    scope path prefix   scope detailed with dots.
  *
  * matching scopes:
  * - https://example.com/
@@ -26,9 +26,8 @@ class UriScope implements ScopeInterface
 
 	public function __construct(
 		private string $path,
-		private ResourceServerConfig $resourceServerConfig
-	)
-	{
+		private ResourceServerConfig $resourceServerConfig,
+	) {
 		Assert::regex($path, '/^[a-z0-9\.\-\/]*$/');
 	}
 
@@ -46,12 +45,12 @@ class UriScope implements ScopeInterface
 			throw new \RuntimeException('ResourceServerConfig not set, call self::setDefaultResourceServerConfig() first');
 		}
 
-        return new self($path, self::$defaultResourceServerConfig);
+		return new self($path, self::$defaultResourceServerConfig);
 	}
 
 	public function getIdentifier(): string
 	{
-		return rtrim($this->resourceServerConfig->getScopeBaseUrl() . '/' . $this->path, '/');
+		return rtrim($this->resourceServerConfig->getScopeBaseUrl().'/'.$this->path, '/');
 	}
 
 	public function isSatisfiedBy(ScopeInterface $scope): bool

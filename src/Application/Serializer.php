@@ -11,20 +11,20 @@ use Webmozart\Assert\Assert;
 
 class Serializer implements SerializerInterface, SerializerAwareInterface
 {
-    use SerializerAwareTrait;
+	use SerializerAwareTrait;
 
-	const FORMAT = 'json';
+	public const FORMAT = 'json';
 
-    public function __construct(\Symfony\Component\Serializer\SerializerInterface $serializer)
-    {
-        $this->setSerializer($serializer);
-    }
+	public function __construct(\Symfony\Component\Serializer\SerializerInterface $serializer)
+	{
+		$this->setSerializer($serializer);
+	}
 
 	/**
 	 * @param array<string>|null $groups
 	 */
-    public function serialize(mixed $data, ?array $groups = null): string
-    {
+	public function serialize(mixed $data, ?array $groups = null): string
+	{
 		$context = [];
 
 		if (!is_null($groups)) {
@@ -33,18 +33,19 @@ class Serializer implements SerializerInterface, SerializerAwareInterface
 		}
 
 		return $this->serializer->serialize($data, static::FORMAT, $context);
-    }
+	}
 
-    /**
+	/**
 	 * @noinspection PhpParameterNameChangedDuringInheritanceInspection
+	 *
 	 * @return array<mixed>|object
 	 */
-    public function deserialize(mixed $data, string $type): object|array
-    {
+	public function deserialize(mixed $data, string $type): object|array
+	{
 		try {
 			return $this->serializer->deserialize($data, $type, static::FORMAT);
 		} catch (\Throwable $e) {
-			throw new DeserializeException('Deserialization failed: ' . $e->getMessage(), 0, $e);
+			throw new DeserializeException('Deserialization failed: '.$e->getMessage(), 0, $e);
 		}
-    }
+	}
 }

@@ -6,15 +6,13 @@ namespace Nalgoo\Common\Domain\Enums;
 use Nalgoo\Common\Domain\Exceptions\DomainLogicException;
 use Nalgoo\Common\Domain\IntValueInterface;
 use Nalgoo\Common\Domain\StringValueInterface;
-use ReflectionClassConstant;
 use Webmozart\Assert\Assert;
 
 class Gender implements IntValueInterface, StringValueInterface, \Stringable
 {
 	private function __construct(
-		protected mixed $value
-	)
-	{
+		protected mixed $value,
+	) {
 		Assert::oneOf($value, static::getConstants());
 	}
 
@@ -25,7 +23,7 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 	{
 		$reflection = new \ReflectionClass(static::class);
 
-		return array_values($reflection->getConstants(ReflectionClassConstant::IS_PUBLIC));
+		return array_values($reflection->getConstants(\ReflectionClassConstant::IS_PUBLIC));
 	}
 
 	protected static function getInstanceFor(string|int|bool $value): static
@@ -99,7 +97,7 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 			return self::FEMALE_INT;
 		}
 
-		throw new DomainLogicException('Gender value ' . $this->value . ' not supported as int !');
+		throw new DomainLogicException('Gender value '.$this->value.' not supported as int !');
 	}
 
 	/**
@@ -118,7 +116,7 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 			return self::OTHER_STRING;
 		}
 
-		throw new DomainLogicException('Gender value ' . $this->value . ' not supported as string !');
+		throw new DomainLogicException('Gender value '.$this->value.' not supported as string !');
 	}
 
 	/**
@@ -141,7 +139,7 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 			return self::FEMALE_BOOL;
 		}
 
-		throw new DomainLogicException('Gender value ' . $this->value . ' not supported as bool !');
+		throw new DomainLogicException('Gender value '.$this->value.' not supported as bool !');
 	}
 
 	/**
@@ -160,7 +158,7 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 			return 'other';
 		}
 
-		throw new DomainLogicException('Gender value ' . $this->value . ' not supported as claim!');
+		throw new DomainLogicException('Gender value '.$this->value.' not supported as claim!');
 	}
 
 	public function jsonSerialize(): mixed

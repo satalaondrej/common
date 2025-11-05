@@ -10,7 +10,8 @@ class File implements FileInterface
 	public function __construct(
 		private readonly FileMeta $meta,
 		private readonly string $contents,
-	) {}
+	) {
+	}
 
 	public function getMeta(): FileMeta
 	{

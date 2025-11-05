@@ -6,9 +6,8 @@ namespace Nalgoo\Common\Infrastructure\OAuth;
 class Scope implements ScopeInterface
 {
 	public function __construct(
-		private string $identifier
-	)
-	{
+		private string $identifier,
+	) {
 	}
 
 	public function getIdentifier(): string
@@ -20,5 +19,4 @@ class Scope implements ScopeInterface
 	{
 		return $this->getIdentifier() === $scope->getIdentifier();
 	}
-
 }

@@ -18,41 +18,40 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 abstract class ActionFactory implements ActionFactoryInterface
 {
-    /** @var array<string, UrlResolverInterface> */
-    protected array $urlResolvers = [];
+	/** @var array<string, UrlResolverInterface> */
+	protected array $urlResolvers = [];
 
-    public function __construct(
-		protected ContainerInterface $container
-	)
-    {
-    }
+	public function __construct(
+		protected ContainerInterface $container,
+	) {
+	}
 
 	/**
 	 * @throws ContainerExceptionInterface
 	 * @throws NotFoundExceptionInterface
 	 */
 	public function getLogger(): LoggerInterface
-    {
-        return $this->container->get(LoggerInterface::class);
-    }
+	{
+		return $this->container->get(LoggerInterface::class);
+	}
 
-    public function getUrlResolver(RequestInterface $request): UrlResolverInterface
-    {
-        $hash = spl_object_hash($request);
+	public function getUrlResolver(RequestInterface $request): UrlResolverInterface
+	{
+		$hash = spl_object_hash($request);
 
-        if (!array_key_exists($hash, $this->urlResolvers)) {
-            $this->urlResolvers[$hash] = new UrlResolver($request);
-        }
+		if (!array_key_exists($hash, $this->urlResolvers)) {
+			$this->urlResolvers[$hash] = new UrlResolver($request);
+		}
 
-        return $this->urlResolvers[$hash];
-    }
+		return $this->urlResolvers[$hash];
+	}
 
 	/**
 	 * @param array<NormalizerInterface|DenormalizerInterface> $normalizers
 	 * @param array<EncoderInterface|DecoderInterface>         $encoders
 	 */
-    protected function createSerializer(array $normalizers = [], array $encoders = []): Serializer
-    {
-        return new Serializer(new \Symfony\Component\Serializer\Serializer($normalizers, $encoders));
-    }
+	protected function createSerializer(array $normalizers = [], array $encoders = []): Serializer
+	{
+		return new Serializer(new \Symfony\Component\Serializer\Serializer($normalizers, $encoders));
+	}
 }

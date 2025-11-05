@@ -28,13 +28,14 @@ abstract class Action
 	protected array $args;
 
 	public function __construct(
-		protected ActionFactoryInterface $actionFactory
+		protected ActionFactoryInterface $actionFactory,
 	) {
 		$this->logger = $actionFactory->getLogger();
 	}
 
 	/**
 	 * @param array<string, mixed> $args
+	 *
 	 * @throws HttpNotFoundException
 	 * @throws HttpBadRequestException
 	 */
@@ -61,7 +62,7 @@ abstract class Action
 	 * @throws HttpBadRequestException
 	 */
 	protected function resolveArg(string $name): mixed
-    {
+	{
 		if (!isset($this->args[$name])) {
 			throw new HttpBadRequestException($this->request, "Could not resolve argument `{$name}`.");
 		}
@@ -71,6 +72,7 @@ abstract class Action
 
 	/**
 	 * @return array<mixed>
+	 *
 	 * @throws HttpBadRequestException
 	 */
 	protected function getJson(): array
@@ -92,8 +94,11 @@ abstract class Action
 
 	/**
 	 * @template TObject of object
+	 *
 	 * @param class-string<TObject> $className
+	 *
 	 * @return TObject|array<mixed>
+	 *
 	 * @throws HttpBadRequestException
 	 */
 	protected function deserializeBody(string $className): object|array
@@ -104,11 +109,7 @@ abstract class Action
 				$className
 			);
 		} catch (DeserializeException $e) {
-			throw new HttpBadRequestException(
-				$this->request,
-				'Incorrect or missing input data: ' . $e->getMessage(),
-				$e
-			);
+			throw new HttpBadRequestException($this->request, 'Incorrect or missing input data: '.$e->getMessage(), $e);
 		}
 	}
 
@@ -141,7 +142,7 @@ abstract class Action
 	{
 		$securePart = $this->request->getUri()->getScheme() === 'https' ? ';Secure' : '';
 
-		$expiresPart = $expires ? (';Expires=' . $expires->format('r')) : '';
+		$expiresPart = $expires ? (';Expires='.$expires->format('r')) : '';
 
 		$httpOnlyPart = $httpOnly ? ';HttpOnly' : '';
 
@@ -161,6 +162,7 @@ abstract class Action
 
 	/**
 	 * @param array<mixed>|string|null $default
+	 *
 	 * @return array<mixed>|string|null
 	 */
 	protected function getQuery(string $queryParamName, array|string|null $default = null): array|string|null
@@ -171,7 +173,8 @@ abstract class Action
 	}
 
 	/**
-	 * Creates URI with given path (either absolute or relative) based on request's base URL
+	 * Creates URI with given path (either absolute or relative) based on request's base URL.
+	 *
 	 * @param array<string, mixed> $queryParams
 	 */
 	protected function resolveUrl(string $path, array $queryParams = []): string

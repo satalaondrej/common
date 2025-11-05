@@ -5,10 +5,9 @@ namespace Nalgoo\Common\Infrastructure\OAuth;
 
 use Lcobucci\Clock\FrozenClock;
 use Lcobucci\JWT\Encoding\JoseEncoder;
-use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token;
+use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\UnencryptedToken;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
@@ -22,9 +21,8 @@ class ResourceServer
 {
 	public function __construct(
 		protected Key $publicKey,
-		protected ClockService $clockService
-	)
-	{
+		protected ClockService $clockService,
+	) {
 	}
 
 	/**
@@ -56,11 +54,11 @@ class ResourceServer
 			}
 		}
 
-		throw new OAuthScopeException('Token is missing required scope: ' . $requiredScope->getIdentifier());
+		throw new OAuthScopeException('Token is missing required scope: '.$requiredScope->getIdentifier());
 	}
 
 	/**
-	 * Taken from https://oauth2.thephpleague.com/
+	 * Taken from https://oauth2.thephpleague.com/.
 	 *
 	 * @throws OAuthTokenException
 	 */
@@ -80,7 +78,7 @@ class ResourceServer
 		try {
 			$token = (new Parser(new JoseEncoder()))->parse($jwt);
 		} catch (\Throwable $e) {
-			throw new OAuthTokenException('Cannot parse JWT token: ' . $e->getMessage());
+			throw new OAuthTokenException('Cannot parse JWT token: '.$e->getMessage());
 		}
 
 		if (!$token instanceof UnencryptedToken) {
@@ -93,21 +91,11 @@ class ResourceServer
 
 		$clock = new FrozenClock($this->clockService->getCurrentTime());
 
-		//TODO - should we use LooseValidAt or StrictValidAt ?
+		// TODO - should we use LooseValidAt or StrictValidAt ?
 		if (!$validator->validate($token, new LooseValidAt($clock, new \DateInterval('PT5S')))) {
-			throw new OAuthTokenException(
-				sprintf(
-					'Access token is expired: [now=%d] [token iat=%s, nbf=%s, exp=%s, sub=%s]',
-					$clock->now()->getTimestamp(),
-					$token->claims()->get('iat')?->getTimestamp() ?? '',
-					$token->claims()->get('nbf')?->getTimestamp() ?? '',
-					$token->claims()->get('exp')?->getTimestamp() ?? '',
-					$token->claims()->get('sub'),
-				)
-			);
+			throw new OAuthTokenException(sprintf('Access token is expired: [now=%d] [token iat=%s, nbf=%s, exp=%s, sub=%s]', $clock->now()->getTimestamp(), $token->claims()->get('iat')?->getTimestamp() ?? '', $token->claims()->get('nbf')?->getTimestamp() ?? '', $token->claims()->get('exp')?->getTimestamp() ?? '', $token->claims()->get('sub')));
 		}
 
 		return $token;
 	}
-
 }

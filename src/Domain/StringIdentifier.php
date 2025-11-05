@@ -6,13 +6,12 @@ namespace Nalgoo\Common\Domain;
 class StringIdentifier extends StringValue implements StringValueInterface, \Stringable, \JsonSerializable
 {
 	public function __construct(
-		protected string $id
-	)
-	{
+		protected string $id,
+	) {
 	}
 
-    /** @noinspection PhpParameterNameChangedDuringInheritanceInspection */
-    public static function fromString(string $id): static
+	/** @noinspection PhpParameterNameChangedDuringInheritanceInspection */
+	public static function fromString(string $id): static
 	{
 		return new static($id);
 	}
