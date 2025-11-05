@@ -1,4 +1,4 @@
-.PHONY: analyse cs-fixer-fix cs-fixer-check help
+.PHONY: analyse cs-fixer-fix cs-fixer-check test test-coverage help
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -14,3 +14,9 @@ cs-fixer-fix: ## Fix code style issues with PHP-CS-Fixer
 
 cs-fixer-check: ## Check code style issues with PHP-CS-Fixer (dry-run)
 	./vendor/bin/php-cs-fixer fix --dry-run --diff
+
+test: ## Run PHPUnit tests
+	./vendor/bin/phpunit
+
+test-coverage: ## Run PHPUnit tests with code coverage
+	XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html coverage
