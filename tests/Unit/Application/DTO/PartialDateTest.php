@@ -40,4 +40,22 @@ final class PartialDateTest extends TestCase
 		$this->assertNull($date->getMonth());
 		$this->assertNull($date->getDay());
 	}
+
+	public function testValidYearOnly(): void
+	{
+		$date = new PartialDate(2024, null, null);
+
+		$this->assertSame(2024, $date->getYear());
+		$this->assertNull($date->getMonth());
+		$this->assertNull($date->getDay());
+	}
+
+	public function testValidYearBoundaries(): void
+	{
+		$date1 = new PartialDate(1, null, null);
+		$this->assertSame(1, $date1->getYear());
+
+		$date2 = new PartialDate(9999, null, null);
+		$this->assertSame(9999, $date2->getYear());
+	}
 }

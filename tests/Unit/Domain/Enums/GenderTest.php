@@ -96,4 +96,10 @@ final class GenderTest extends TestCase
 
 		$this->assertSame($gender1, $gender2);
 	}
+
+	public function testInvalidValueThrowsException(): void
+	{
+		$this->expectException(\InvalidArgumentException::class);
+		Gender::fromString('invalid');
+	}
 }
