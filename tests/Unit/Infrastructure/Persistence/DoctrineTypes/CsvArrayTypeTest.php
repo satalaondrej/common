@@ -250,4 +250,56 @@ final class CsvArrayTypeTest extends TestCase
 		$php = $this->type->convertToPHPValue($database, $this->platform);
 		$this->assertSame($value, $php);
 	}
+
+	/**
+	 * Failure Scenario Tests.
+	 *
+	 * The CsvArrayType now throws explicit exceptions instead of silently failing.
+	 * This ensures data integrity by preventing:
+	 * - Silent NULL saves when encoding fails
+	 * - Silent empty array returns when decoding fails
+	 *
+	 * Failure paths covered by the implementation:
+	 * 1. fopen() fails → throws PersistenceException
+	 * 2. fputcsv() fails → throws PersistenceException
+	 * 3. fgets() fails → throws PersistenceException
+	 * 4. fwrite() fails → throws PersistenceException
+	 * 5. fgetcsv() returns false → throws PersistenceException
+	 * 6. stream_get_contents() fails → throws PersistenceException
+	 *
+	 * Note: These scenarios are extremely difficult to test in unit tests as
+	 * php://memory operations rarely fail. The exception throwing code is present
+	 * to handle edge cases like memory exhaustion or system resource limits.
+	 */
+
+	/**
+	 * Test that empty values return empty array rather than throwing exceptions.
+	 * This is intentional behavior for valid edge cases.
+	 */
+	public function testEdgeCasesReturnEmptyArrayNotException(): void
+	{
+		// Null value
+		$result1 = $this->type->convertToPHPValue(null, $this->platform);
+		$this->assertSame([], $result1);
+
+		// Empty string
+		$result2 = $this->type->convertToPHPValue('', $this->platform);
+		$this->assertSame([], $result2);
+
+		// False value
+		$result3 = $this->type->convertToPHPValue(false, $this->platform);
+		$this->assertSame([], $result3);
+	}
+
+	/**
+	 * Test that empty or falsy values in convertToDatabaseValue return null.
+	 * This is intentional behavior for valid edge cases.
+	 */
+	public function testEmptyValuesToDatabaseReturnNull(): void
+	{
+		$this->assertNull($this->type->convertToDatabaseValue([], $this->platform));
+		$this->assertNull($this->type->convertToDatabaseValue(null, $this->platform));
+		$this->assertNull($this->type->convertToDatabaseValue(false, $this->platform));
+		$this->assertNull($this->type->convertToDatabaseValue(0, $this->platform));
+	}
 }
