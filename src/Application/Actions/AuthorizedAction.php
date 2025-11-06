@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Nalgoo\Common\Application\Actions;
 
-use Lcobucci\JWT\Token;
 use Lcobucci\JWT\UnencryptedToken;
 use Nalgoo\Common\Infrastructure\OAuth\OAuthScopedInterface;
 use Nalgoo\Common\Infrastructure\OAuth\ScopeInterface;
