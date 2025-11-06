@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace Nalgoo\Common\Application\Normalizers;
 
-use Doctrine\Common\Proxy\Proxy;
+use Doctrine\Persistence\Proxy;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer as BasePropertyNormalizer;
 
 /**
  * Normalizer - acts same as Symfony PropertyNormalizer but serializes doctrine proxies properly
  * (initializes /loads them and ignores doctrine internal proxy properties).
+ *
+ * @phpstan-ignore class.extendsFinalByPhpDoc (intentional extension to add Doctrine proxy support)
  **/
 class PropertyNormalizer extends BasePropertyNormalizer
 {

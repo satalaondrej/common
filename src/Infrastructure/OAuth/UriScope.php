@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
  */
 class UriScope implements ScopeInterface
 {
-	private static ?ResourceServerConfig $defaultResourceServerConfig;
+	private static ?ResourceServerConfig $defaultResourceServerConfig = null;
 
 	public function __construct(
 		private string $path,

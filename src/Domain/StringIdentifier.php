@@ -13,6 +13,7 @@ class StringIdentifier extends StringValue implements StringValueInterface, \Str
 	/** @noinspection PhpParameterNameChangedDuringInheritanceInspection */
 	public static function fromString(string $id): static
 	{
+		// @phpstan-ignore new.static (intentional for factory method pattern)
 		return new static($id);
 	}
 

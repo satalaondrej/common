@@ -15,6 +15,7 @@ class IntegerIdentifier implements IntValueInterface, \JsonSerializable
 	/** @noinspection PhpParameterNameChangedDuringInheritanceInspection */
 	public static function fromInt(int $id): static
 	{
+		// @phpstan-ignore new.static (intentional for factory method pattern)
 		return new static($id);
 	}
 

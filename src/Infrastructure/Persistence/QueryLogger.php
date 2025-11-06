@@ -22,7 +22,10 @@ class QueryLogger implements SQLLogger
 	/** @var mixed[]|null */
 	private ?array $params = null;
 
-	/** @var mixed[]|null */
+	/**
+	 * @var mixed[]|null
+	 * @phpstan-ignore property.onlyWritten (stored for potential debugging, deprecated class)
+	 */
 	private ?array $types = null;
 
 	public function __construct(

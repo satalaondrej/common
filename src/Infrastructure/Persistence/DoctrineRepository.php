@@ -74,6 +74,7 @@ abstract class DoctrineRepository
 	): array {
 		try {
 			/** @var TObject[] */
+			// @phpstan-ignore-next-line argument.type, argument.templateType
 			return $this->entityManager->getRepository($entityClassName)->findBy($criteria, $orderBy, $limit, $offset);
 		} catch (\Throwable $e) {
 			throw PersistenceException::from($e);
@@ -98,6 +99,7 @@ abstract class DoctrineRepository
 	{
 		try {
 			/** @var TObject|null */
+			// @phpstan-ignore-next-line argument.type, argument.templateType
 			return $this->entityManager->getRepository($entityClassName)->findOneBy($criteria, $orderBy);
 		} catch (\Throwable $e) {
 			throw PersistenceException::from($e);

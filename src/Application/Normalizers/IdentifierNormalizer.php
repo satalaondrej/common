@@ -32,6 +32,7 @@ class IdentifierNormalizer implements DenormalizerInterface
 			throw new InvalidArgumentException();
 		}
 
+		/** @var StringIdentifier|IntegerIdentifier */
 		return new $type($data);
 	}
 

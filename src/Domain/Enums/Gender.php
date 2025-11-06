@@ -31,6 +31,7 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 		static $instances = [];
 
 		if (!isset($instances[static::class][$value])) {
+			// @phpstan-ignore new.static (intentional for enum singleton pattern)
 			$instances[static::class][$value] = new static($value);
 		}
 

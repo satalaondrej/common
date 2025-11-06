@@ -21,6 +21,7 @@ class ResourceServerConfig
 
 	public static function fromRequest(RequestInterface $request): static
 	{
+		// @phpstan-ignore new.static (intentional for factory method pattern)
 		return new static(
 			$request->getUri()->getHost(),
 			$request->getUri()->getScheme() === 'https',

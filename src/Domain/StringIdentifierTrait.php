@@ -8,6 +8,9 @@ use Nalgoo\Common\Application\Interfaces\SerializerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * @phpstan-ignore trait.unused (provided for external use in applications using this library)
+ */
 #[OA\Schema]
 trait StringIdentifierTrait
 {
