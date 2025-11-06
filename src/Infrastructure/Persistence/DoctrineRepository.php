@@ -19,6 +19,7 @@ abstract class DoctrineRepository
 	 * @template TObject of object
 	 *
 	 * @param class-string<TObject> $entityClassName
+	 * @param mixed                 $primaryKey      Primary key value (int, string, or composite key array)
 	 *
 	 * @return TObject|null
 	 *
@@ -57,8 +58,8 @@ abstract class DoctrineRepository
 	 * @template TObject of object
 	 *
 	 * @param class-string<TObject>      $entityClassName
-	 * @param array<string, mixed>       $criteria
-	 * @param array<string, string>|null $orderBy
+	 * @param array<string, mixed>       $criteria        Field names to values (mixed: int, string, bool, null, objects, etc.)
+	 * @param array<string, string>|null $orderBy         Field names to sort direction (ASC/DESC)
 	 *
 	 * @return TObject[]
 	 *
@@ -85,8 +86,8 @@ abstract class DoctrineRepository
 	 * @template TObject of object
 	 *
 	 * @param class-string<TObject>      $entityClassName
-	 * @param array<string, mixed>       $criteria
-	 * @param array<string, string>|null $orderBy
+	 * @param array<string, mixed>       $criteria        Field names to values (mixed: int, string, bool, null, objects, etc.)
+	 * @param array<string, string>|null $orderBy         Field names to sort direction (ASC/DESC)
 	 *
 	 * @return TObject|null
 	 *
@@ -130,7 +131,11 @@ abstract class DoctrineRepository
 	}
 
 	/**
-	 * @param array<string, mixed> $params
+	 * Execute DQL query and return results.
+	 *
+	 * @param array<string, mixed> $params DQL parameters (mixed: scalars, objects, arrays, etc.)
+	 *
+	 * @return mixed Query result (type depends on query and hydration mode)
 	 */
 	protected function queryDql(string $dql, array $params = [], ?int $limit = null, int $offset = 0): mixed
 	{
@@ -152,7 +157,11 @@ abstract class DoctrineRepository
 	}
 
 	/**
-	 * @param array<string, mixed> $params
+	 * Execute DQL query and return single scalar result.
+	 *
+	 * @param array<string, mixed> $params DQL parameters (mixed: scalars, objects, arrays, etc.)
+	 *
+	 * @return mixed Single scalar result (int, string, float, bool, null, etc.)
 	 */
 	protected function querySingleScalarDql(string $dql, array $params = []): mixed
 	{

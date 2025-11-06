@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Nalgoo\Common\Infrastructure\Url;
 
-class QueryString implements \Stringable
+final class QueryString implements \Stringable
 {
 	private bool $separator = false;
 
@@ -20,7 +20,6 @@ class QueryString implements \Stringable
 	 */
 	public static function new(array $params = []): static
 	{
-		/* @phpstan-ignore-next-line */
 		return new static($params);
 	}
 
