@@ -82,7 +82,7 @@ class CsvArrayType extends SimpleArrayType
 			return false;
 		}
 
-		/** @var string[] */
+		/* @var string[] */
 		return array_map(fn ($item) => (string) $item, $data);
 	}
 }

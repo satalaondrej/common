@@ -32,7 +32,7 @@ class IdentifierNormalizer implements DenormalizerInterface
 			throw new InvalidArgumentException();
 		}
 
-		/** @var StringIdentifier|IntegerIdentifier */
+		// @phpstan-ignore return.type (dynamic instantiation validated by supportsDenormalization)
 		return new $type($data);
 	}
 

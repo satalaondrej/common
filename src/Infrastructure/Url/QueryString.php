@@ -20,7 +20,7 @@ class QueryString implements \Stringable
 	 */
 	public static function new(array $params = []): static
 	{
-		/** @phpstan-ignore-next-line */
+		/* @phpstan-ignore-next-line */
 		return new static($params);
 	}
 
