@@ -73,9 +73,7 @@ abstract class DoctrineRepository
 		?int $offset = null,
 	): array {
 		try {
-			/** @phpstan-var \Doctrine\ORM\EntityRepository<TObject> $repository */
-			$repository = $this->entityManager->getRepository($entityClassName);
-			return $repository->findBy($criteria, $orderBy, $limit, $offset);
+			return $this->entityManager->getRepository($entityClassName)->findBy($criteria, $orderBy, $limit, $offset);
 		} catch (\Throwable $e) {
 			throw PersistenceException::from($e);
 		}
@@ -98,9 +96,7 @@ abstract class DoctrineRepository
 	protected function findOneBy(string $entityClassName, array $criteria, ?array $orderBy = null): ?object
 	{
 		try {
-			/** @phpstan-var \Doctrine\ORM\EntityRepository<TObject> $repository */
-			$repository = $this->entityManager->getRepository($entityClassName);
-			return $repository->findOneBy($criteria, $orderBy);
+			return $this->entityManager->getRepository($entityClassName)->findOneBy($criteria, $orderBy);
 		} catch (\Throwable $e) {
 			throw PersistenceException::from($e);
 		}

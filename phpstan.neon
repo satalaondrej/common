@@ -1,7 +1,5 @@
 parameters:
-    level: 8
-    paths:
-        - src
-    excludePaths:
-    doctrine:
-        repositoryClass: Nalgoo\Common\Infrastructure\Persistence\DoctrineRepository
+	level: 8
+	paths:
+		- src
+	excludePaths:
