@@ -71,7 +71,7 @@ abstract class Action
 	}
 
 	/**
-	 * @return array<mixed>
+	 * @return mixed[]
 	 *
 	 * @throws HttpBadRequestException
 	 */
@@ -97,7 +97,7 @@ abstract class Action
 	 *
 	 * @param class-string<TObject> $className
 	 *
-	 * @return TObject|array<mixed>
+	 * @return TObject|mixed[]
 	 *
 	 * @throws HttpBadRequestException
 	 */
@@ -123,7 +123,7 @@ abstract class Action
 	}
 
 	/**
-	 * @param array<string>|null $groups
+	 * @param string[]|null $groups
 	 */
 	protected function respondWithJson(mixed $data, int $statusCode = StatusCode::SUCCESS_OK, ?array $groups = null): Response
 	{
@@ -161,9 +161,9 @@ abstract class Action
 	}
 
 	/**
-	 * @param array<mixed>|string|null $default
+	 * @param mixed[]|string|null $default
 	 *
-	 * @return array<mixed>|string|null
+	 * @return mixed[]|string|null
 	 */
 	protected function getQuery(string $queryParamName, array|string|null $default = null): array|string|null
 	{

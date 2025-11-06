@@ -19,10 +19,10 @@ class QueryLogger implements SQLLogger
 
 	private string $sql;
 
-	/** @var array<mixed>|null */
+	/** @var mixed[]|null */
 	private ?array $params = null;
 
-	/** @var array<mixed>|null */
+	/** @var mixed[]|null */
 	private ?array $types = null;
 
 	public function __construct(
@@ -32,8 +32,8 @@ class QueryLogger implements SQLLogger
 	}
 
 	/**
-	 * @param array<mixed>|null $params
-	 * @param array<mixed>|null $types
+	 * @param mixed[]|null $params
+	 * @param mixed[]|null $types
 	 */
 	public function startQuery($sql, ?array $params = null, ?array $types = null)
 	{

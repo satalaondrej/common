@@ -10,8 +10,8 @@ interface SerializerInterface
 	public const LIST_GROUP = 'list';
 
 	/**
-	 * @param object|array<mixed>|null $data
-	 * @param array<string>|null       $groups
+	 * @param object|mixed[]|null $data
+	 * @param string[]|null       $groups
 	 */
 	public function serialize(object|array|null $data, ?array $groups = null): string;
 
@@ -22,7 +22,7 @@ interface SerializerInterface
 	 *
 	 * @param class-string<TObject> $className
 	 *
-	 * @return TObject|array<mixed>
+	 * @return TObject|mixed[]
 	 *
 	 * @throws DeserializeException
 	 */

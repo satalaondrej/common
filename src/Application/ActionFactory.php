@@ -47,8 +47,8 @@ abstract class ActionFactory implements ActionFactoryInterface
 	}
 
 	/**
-	 * @param array<NormalizerInterface|DenormalizerInterface> $normalizers
-	 * @param array<EncoderInterface|DecoderInterface>         $encoders
+	 * @param (NormalizerInterface|DenormalizerInterface)[] $normalizers
+	 * @param (EncoderInterface|DecoderInterface)[]         $encoders
 	 */
 	protected function createSerializer(array $normalizers = [], array $encoders = []): Serializer
 	{

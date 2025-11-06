@@ -17,7 +17,7 @@ class Gender implements IntValueInterface, StringValueInterface, \Stringable
 	}
 
 	/**
-	 * @return array<int|string|bool>
+	 * @return (int|string|bool)[]
 	 */
 	protected static function getConstants(): array
 	{

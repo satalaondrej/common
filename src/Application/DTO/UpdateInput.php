@@ -7,7 +7,7 @@ use Webmozart\Assert\Assert;
 
 class UpdateInput
 {
-	/** @var array<\BackedEnum> */
+	/** @var \BackedEnum[] */
 	protected array $updatedProperties = [];
 
 	protected function setProperty(\BackedEnum $property, mixed $value): static

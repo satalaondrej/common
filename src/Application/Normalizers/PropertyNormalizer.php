@@ -15,7 +15,7 @@ class PropertyNormalizer extends BasePropertyNormalizer
 	/**
 	 * @param array<string, mixed> $context
 	 *
-	 * @return float|int|bool|string|array<mixed>|\ArrayObject<int|string, mixed>|null
+	 * @return float|int|bool|string|mixed[]|\ArrayObject<int|string, mixed>|null
 	 */
 	public function normalize($object, ?string $format = null, array $context = []): float|array|\ArrayObject|bool|int|string|null
 	{

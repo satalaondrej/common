@@ -31,7 +31,7 @@ abstract class AuthorizedAction extends Action implements OAuthScopedInterface
 	}
 
 	/**
-	 * @return array<string>
+	 * @return string[]
 	 */
 	protected function getAuthorizedScopes(): array
 	{
@@ -55,7 +55,7 @@ abstract class AuthorizedAction extends Action implements OAuthScopedInterface
 	}
 
 	/**
-	 * @return array<string>
+	 * @return string[]
 	 *
 	 * @deprecated use getAuthorizedScopes()
 	 */

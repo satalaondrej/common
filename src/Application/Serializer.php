@@ -21,7 +21,7 @@ class Serializer implements SerializerInterface, SerializerAwareInterface
 	}
 
 	/**
-	 * @param array<string>|null $groups
+	 * @param string[]|null $groups
 	 */
 	public function serialize(mixed $data, ?array $groups = null): string
 	{
@@ -38,7 +38,7 @@ class Serializer implements SerializerInterface, SerializerAwareInterface
 	/**
 	 * @noinspection PhpParameterNameChangedDuringInheritanceInspection
 	 *
-	 * @return array<mixed>|object
+	 * @return mixed[]|object
 	 */
 	public function deserialize(mixed $data, string $type): object|array
 	{
