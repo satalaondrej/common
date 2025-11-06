@@ -2,4 +2,11 @@ parameters:
 	level: 8
 	paths:
 		- src
+		- tests
 	excludePaths:
+	ignoreErrors:
+		# Tests often have redundant assertions for documentation and runtime verification
+		-
+			identifier: method.alreadyNarrowedType
+			paths:
+				- tests/*

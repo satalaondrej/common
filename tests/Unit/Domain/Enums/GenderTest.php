@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Nalgoo\Common\Tests\Unit\Domain\Enums;
 
 use Nalgoo\Common\Domain\Enums\Gender;
-use Nalgoo\Common\Domain\Exceptions\DomainLogicException;
 use PHPUnit\Framework\TestCase;
 
 final class GenderTest extends TestCase

@@ -6,7 +6,6 @@ namespace Nalgoo\Common\Tests\Unit\Application\DTO;
 use Nalgoo\Common\Application\DTO\NamedValue;
 use Nalgoo\Common\Application\DTO\UpdateInput;
 use PHPUnit\Framework\TestCase;
-use Webmozart\Assert\InvalidArgumentException;
 
 enum TestProperty: string
 {

@@ -164,6 +164,7 @@ final class CsvArrayTypeTest extends TestCase
 	public function testConvertToPHPValueWithResource(): void
 	{
 		$resource = fopen('php://memory', 'r+');
+		$this->assertIsResource($resource);
 		fwrite($resource, 'test1,test2,test3');
 		rewind($resource);
 

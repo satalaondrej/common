@@ -5,6 +5,7 @@ namespace Nalgoo\Common\Tests\Unit\Application;
 
 use Nalgoo\Common\Application\Exceptions\DeserializeException;
 use Nalgoo\Common\Application\Serializer;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 use Webmozart\Assert\InvalidArgumentException;
@@ -12,6 +13,7 @@ use Webmozart\Assert\InvalidArgumentException;
 final class SerializerTest extends TestCase
 {
 	private Serializer $serializer;
+	/** @var MockObject&SymfonySerializerInterface */
 	private SymfonySerializerInterface $symfonySerializer;
 
 	protected function setUp(): void
@@ -126,6 +128,7 @@ final class SerializerTest extends TestCase
 			->with($json, 'array', 'json')
 			->willReturn($expectedArray);
 
+		// @phpstan-ignore argument.type (testing array deserialization)
 		$result = $this->serializer->deserialize($json, 'array');
 
 		$this->assertSame($expectedArray, $result);

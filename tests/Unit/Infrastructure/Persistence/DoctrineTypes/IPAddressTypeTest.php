@@ -103,7 +103,9 @@ final class IPAddressTypeTest extends TestCase
 		$php = $this->type->convertToPHPValue($database, $this->platform);
 
 		// PHP normalizes IPv6 addresses
-		$this->assertSame(inet_ntop(inet_pton($original)), $php);
+		$packed = inet_pton($original);
+		$this->assertIsString($packed);
+		$this->assertSame(inet_ntop($packed), $php);
 	}
 
 	public function testLocalhostIPv4(): void
