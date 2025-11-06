@@ -15,6 +15,7 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Exception\HttpNotImplementedException;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
+use Webmozart\Assert\Assert;
 
 class HttpErrorHandler extends SlimErrorHandler
 {
@@ -56,9 +57,7 @@ class HttpErrorHandler extends SlimErrorHandler
 		$payload = new ActionPayload($statusCode, null, $error);
 		$encodedPayload = json_encode($payload, JSON_PRETTY_PRINT);
 
-		if ($encodedPayload === false) {
-			$encodedPayload = '{"error":"Failed to encode error payload"}';
-		}
+		Assert::string($encodedPayload, 'Failed to encode error payload');
 
 		$response = $this->responseFactory->createResponse($statusCode);
 		$response->getBody()->write($encodedPayload);
