@@ -25,13 +25,16 @@ class ReverseProxyMiddleware implements MiddlewareInterface
 		if ($request->hasHeader('X-Forwarded-Host')) {
 			$hostHeader = $request->getHeaderLine('X-Forwarded-Host');
 
-			if (preg_match('/^(?P<host>[a-z0-9\.\-]+)(?::(?P<port>[0-9]+))?$/i', $hostHeader, $matches)) {
+			$matchResult = preg_match('/^(?P<host>[a-z0-9\.\-]+)(?::(?P<port>[0-9]+))?$/i', $hostHeader, $matches);
+
+			if ($matchResult === 1) {
 				$uri = $uri->withHost($matches['host']);
 
 				if (array_key_exists('port', $matches)) {
 					$uri = $uri->withPort((int) $matches['port']);
 				}
 			}
+			// If $matchResult === false (regex error) or 0 (no match), skip header processing
 		}
 
 		if ($request->hasHeader('X-Forwarded-Port')) {

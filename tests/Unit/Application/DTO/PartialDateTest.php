@@ -59,23 +59,24 @@ final class PartialDateTest extends TestCase
 		$this->assertSame(9999, $date2->getYear());
 	}
 
-	public function testFromDateThrowsExceptionDueToBugs(): void
+	public function testFromDateWithDateTime(): void
 	{
-		// The fromDate method exists but has bugs in validation (lines 17, 22)
-		// Testing it to increase coverage, even though it fails
-		$this->expectException(InvalidArgumentException::class);
-
 		$dateTime = new \DateTime('2024-01-15');
-		PartialDate::fromDate($dateTime);
+		$date = PartialDate::fromDate($dateTime);
+
+		$this->assertSame(2024, $date->getYear());
+		$this->assertSame(1, $date->getMonth());
+		$this->assertSame(15, $date->getDay());
 	}
 
 	public function testFromDateWithDateTimeImmutable(): void
 	{
-		// Test with DateTimeImmutable to cover fromDate method
-		$this->expectException(InvalidArgumentException::class);
-
 		$dateTime = new \DateTimeImmutable('2023-06-30');
-		PartialDate::fromDate($dateTime);
+		$date = PartialDate::fromDate($dateTime);
+
+		$this->assertSame(2023, $date->getYear());
+		$this->assertSame(6, $date->getMonth());
+		$this->assertSame(30, $date->getDay());
 	}
 
 	public function testNegativeYear(): void

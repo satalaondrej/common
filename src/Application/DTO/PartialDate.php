@@ -13,13 +13,14 @@ final class PartialDate
 		protected ?int $day,
 	) {
 		if (!is_null($day)) {
-			Assert::greaterThanEq($month, 1);
-			Assert::greaterThanEq($month, 31);
+			Assert::notNull($month, 'Month must be set when day is provided');
+			Assert::greaterThanEq($day, 1);
+			Assert::lessThanEq($day, 31);
 		}
 
 		if (!is_null($month)) {
 			Assert::greaterThanEq($month, 1);
-			Assert::greaterThanEq($month, 12);
+			Assert::lessThanEq($month, 12);
 		}
 
 		if (!is_null($year)) {

@@ -19,6 +19,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class ResourceServer
 {
+	private const TOKEN_LEEWAY = 'PT5S';
+
 	public function __construct(
 		protected Key $publicKey,
 		protected ClockService $clockService,
@@ -41,7 +43,7 @@ class ResourceServer
 	/**
 	 * @throws OAuthScopeException
 	 */
-	protected function validateScope(UnencryptedToken $token, ScopeInterface $requiredScope): bool
+	protected function validateScope(UnencryptedToken $token, ScopeInterface $requiredScope): void
 	{
 		$scopes = array_map(
 			fn ($scopeIdentifier) => new Scope($scopeIdentifier),
@@ -50,7 +52,7 @@ class ResourceServer
 
 		foreach ($scopes as $scope) {
 			if ($requiredScope->isSatisfiedBy($scope)) {
-				return true;
+				return;
 			}
 		}
 
@@ -69,7 +71,7 @@ class ResourceServer
 		}
 
 		$header = $request->getHeader('authorization');
-		$jwt = trim((string) preg_replace('/^(?:\s+)?Bearer\s/', '', $header[0]));
+		$jwt = $this->extractBearerToken($header[0]);
 
 		// Attempt to parse and validate the JWT
 
@@ -91,11 +93,35 @@ class ResourceServer
 
 		$clock = new FrozenClock($this->clockService->getCurrentTime());
 
-		// TODO - should we use LooseValidAt or StrictValidAt ?
-		if (!$validator->validate($token, new LooseValidAt($clock, new \DateInterval('PT5S')))) {
-			throw new OAuthTokenException(sprintf('Access token is expired: [now=%d] [token iat=%s, nbf=%s, exp=%s, sub=%s]', $clock->now()->getTimestamp(), $token->claims()->get('iat')?->getTimestamp() ?? '', $token->claims()->get('nbf')?->getTimestamp() ?? '', $token->claims()->get('exp')?->getTimestamp() ?? '', $token->claims()->get('sub')));
+		if (!$validator->validate($token, new LooseValidAt($clock, new \DateInterval(self::TOKEN_LEEWAY)))) {
+			$this->throwExpiredTokenException($clock, $token);
 		}
 
 		return $token;
+	}
+
+	private function extractBearerToken(string $header): string
+	{
+		$result = preg_replace('/^(?:\s+)?Bearer\s/', '', $header);
+
+		if ($result === null) {
+			throw new OAuthTokenException('Failed to parse Authorization header');
+		}
+
+		return trim($result);
+	}
+
+	private function throwExpiredTokenException(FrozenClock $clock, UnencryptedToken $token): never
+	{
+		$message = sprintf(
+			'Access token is expired: [now=%d] [token iat=%s, nbf=%s, exp=%s, sub=%s]',
+			$clock->now()->getTimestamp(),
+			$token->claims()->get('iat')?->getTimestamp() ?? '',
+			$token->claims()->get('nbf')?->getTimestamp() ?? '',
+			$token->claims()->get('exp')?->getTimestamp() ?? '',
+			$token->claims()->get('sub')
+		);
+
+		throw new OAuthTokenException($message);
 	}
 }
