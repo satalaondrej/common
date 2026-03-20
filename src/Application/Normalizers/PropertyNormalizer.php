@@ -3,34 +3,76 @@ declare(strict_types=1);
 
 namespace Nalgoo\Common\Application\Normalizers;
 
-use Doctrine\Common\Proxy\Proxy;
-use Symfony\Component\Serializer\Normalizer\PropertyNormalizer as BasePropertyNormalizer;
-
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer as SymfonyPropertyNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Normalizer - acts same as Symfony PropertyNormalizer but serializes doctrine proxies properly
- * (initializes /loads them and ignores doctrine internal proxy properties)
+ * Decorator for Symfony's PropertyNormalizer that handles Doctrine proxy objects.
+ *
+ * Uses composition instead of inheritance because Symfony's PropertyNormalizer
+ * is final since symfony/serializer 7.0.
+ *
+ * Wraps a fully configured SymfonyPropertyNormalizer instance and adds:
+ * - Lazy-loading of uninitialized Doctrine proxies before normalization
+ * - Filtering of internal __-prefixed proxy properties (Doctrine ORM 2.x)
  **/
-class PropertyNormalizer extends BasePropertyNormalizer
+class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
 {
-	public function normalize($object, string $format = null, array $context = []): float|array|\ArrayObject|bool|int|string|null
+	public function __construct(
+		private readonly SymfonyPropertyNormalizer $normalizer,
+	) {
+	}
+
+	public function normalize(mixed $object, ?string $format = null, array $context = []): float|array|\ArrayObject|bool|int|string|null
 	{
-		if ($object instanceof Proxy && !$object->__isInitialized()) {
-			$object->__load();
+		if ((class_exists(\Doctrine\Common\Proxy\Proxy::class) && $object instanceof \Doctrine\Common\Proxy\Proxy)
+			|| (class_exists(\Doctrine\Persistence\Proxy::class) && $object instanceof \Doctrine\Persistence\Proxy)
+		) {
+			if (!$object->__isInitialized()) {
+				$object->__load();
+			}
+
+			if (class_exists(\Doctrine\Common\Proxy\Proxy::class) && $object instanceof \Doctrine\Common\Proxy\Proxy) {
+				$context[AbstractNormalizer::IGNORED_ATTRIBUTES] = array_merge(
+					$context[AbstractNormalizer::IGNORED_ATTRIBUTES] ?? [],
+					['__initializer__', '__cloner__', '__isInitialized__'],
+				);
+			}
 		}
 
-		return parent::normalize($object, $format, $context);
+		return $this->normalizer->normalize($object, $format, $context);
+	}
+
+	public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
+	{
+		return $this->normalizer->supportsNormalization($data, $format, $context);
+	}
+
+	public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
+	{
+		return $this->normalizer->denormalize($data, $type, $format, $context);
+	}
+
+	public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
+	{
+		return $this->normalizer->supportsDenormalization($data, $type, $format, $context);
+	}
+
+	public function getSupportedTypes(?string $format): array
+	{
+		return $this->normalizer->getSupportedTypes($format);
 	}
 
 	/**
-     * {@inheritdoc}
-     */
-    protected function isAllowedAttribute($classOrObject, string $attribute, string $format = null, array $context = []): bool
-    {
-		if (is_subclass_of($classOrObject, Proxy::class) && str_starts_with($attribute, '__')) {
-			return false;
-		}
-
-        return parent::isAllowedAttribute($classOrObject, $attribute, $format, $context);
-    }
+	 * Required so that Symfony's Serializer injects itself into the inner normalizer,
+	 * which needs it to recursively handle nested objects.
+	 */
+	public function setSerializer(SerializerInterface $serializer): void
+	{
+		$this->normalizer->setSerializer($serializer);
+	}
 }
