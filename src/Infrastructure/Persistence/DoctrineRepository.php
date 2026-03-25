@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace Nalgoo\Common\Infrastructure\Persistence;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 
 abstract class DoctrineRepository
 {
 	public function __construct(
-		protected EntityManager $entityManager
+		protected EntityManagerInterface $entityManager
 	)
 	{
 	}
