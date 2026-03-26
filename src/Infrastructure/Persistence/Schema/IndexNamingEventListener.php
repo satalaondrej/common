@@ -1,11 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Nalgoo\Common\Infrastructure\Persistence\Schema;
 
 use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
@@ -18,7 +16,7 @@ use Doctrine\ORM\Tools\ToolEvents;
  */
 class IndexNamingEventListener
 {
-	public static function register(EntityManager $em): void
+	public static function register(EntityManagerInterface $em): void
 	{
 		$em->getEventManager()->addEventListener(
 			[ToolEvents::postGenerateSchema],

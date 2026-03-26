@@ -1,23 +1,21 @@
 <?php
+declare(strict_types=1);
 
 namespace Nalgoo\Common\Infrastructure\Persistence;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Nalgoo\Common\Infrastructure\Persistence\Exceptions\UniqueConstraintViolationException;
 
 class Persister
 {
 	public function __construct(
-		private EntityManager $entityManager
+		private EntityManagerInterface $entityManager
 	)
 	{
 	}
 
 	/**
-	 * @return mixed
 	 * @throws PersistenceException
-	 * @throws UniqueConstraintViolationException
-	 * @noinspection PhpUnhandledExceptionInspection
 	 */
 	public function transaction(callable $func): mixed
 	{
