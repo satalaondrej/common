@@ -46,12 +46,19 @@ abstract class ActionFactory implements ActionFactoryInterface
         return $this->urlResolvers[$hash];
     }
 
+    protected function buildSerializer(\Symfony\Component\Serializer\SerializerInterface $serializer): Serializer
+    {
+        return new Serializer($serializer);
+    }
+
 	/**
 	 * @param array<NormalizerInterface|DenormalizerInterface> $normalizers
 	 * @param array<EncoderInterface|DecoderInterface>         $encoders
+	 *
+	 * @deprecated Use buildSerializer() instead.
 	 */
     protected function createSerializer(array $normalizers = [], array $encoders = []): Serializer
     {
-        return new Serializer(new \Symfony\Component\Serializer\Serializer($normalizers, $encoders));
+        return $this->buildSerializer(new \Symfony\Component\Serializer\Serializer($normalizers, $encoders));
     }
 }
