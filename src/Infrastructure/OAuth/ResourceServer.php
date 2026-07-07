@@ -8,7 +8,7 @@ use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token;
+use Lcobucci\JWT\UnencryptedToken;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\Validator;
@@ -30,7 +30,7 @@ class ResourceServer
 	 * @throws OAuthScopeException
 	 * @throws OAuthTokenException
 	 */
-	public function getValidToken(ServerRequestInterface $request, ScopeInterface $requiredScope): Token
+	public function getValidToken(ServerRequestInterface $request, ScopeInterface $requiredScope): UnencryptedToken
 	{
 		$token = $this->validateToken($request);
 
@@ -42,7 +42,7 @@ class ResourceServer
 	/**
 	 * @throws OAuthScopeException
 	 */
-	protected function validateScope(Token $token, ScopeInterface $requiredScope): bool
+	protected function validateScope(UnencryptedToken $token, ScopeInterface $requiredScope): bool
 	{
 		$scopes = array_map(
 			fn ($scopeIdentifier) => new Scope($scopeIdentifier),
@@ -63,7 +63,7 @@ class ResourceServer
 	 *
 	 * @throws OAuthTokenException
 	 */
-	protected function validateToken(ServerRequestInterface $request): Token
+	protected function validateToken(ServerRequestInterface $request): UnencryptedToken
 	{
 		if ($request->hasHeader('authorization') === false) {
 			throw new OAuthTokenException('Missing "Authorization" header');
@@ -82,6 +82,10 @@ class ResourceServer
 			throw new OAuthTokenException('Cannot parse JWT token: ' . $e->getMessage());
 		}
 
+		if (!$token instanceof UnencryptedToken) {
+			throw new OAuthTokenException('Access token is not a valid unencrypted JWT');
+		}
+
 		if (!$validator->validate($token, new SignedWith(new Sha256(), $this->publicKey))) {
 			throw new OAuthTokenException('Access token signature could not be verified');
 		}
@@ -94,10 +98,10 @@ class ResourceServer
 				sprintf(
 					'Access token is expired: [now=%d] [token iat=%s, nbf=%s, exp=%s, sub=%s]',
 					$clock->now()->getTimestamp(),
-					$token->claims()->get('iat')?->getTimestamp() ?? '',
-					$token->claims()->get('nbf')?->getTimestamp() ?? '',
-					$token->claims()->get('exp')?->getTimestamp() ?? '',
-					$token->claims()->get('sub'),
+					($iat = $token->claims()->get('iat')) instanceof \DateTimeInterface ? (string) $iat->getTimestamp() : '',
+					($nbf = $token->claims()->get('nbf')) instanceof \DateTimeInterface ? (string) $nbf->getTimestamp() : '',
+					($exp = $token->claims()->get('exp')) instanceof \DateTimeInterface ? (string) $exp->getTimestamp() : '',
+					is_string($sub = $token->claims()->get('sub')) ? $sub : '',
 				)
 			);
 		}

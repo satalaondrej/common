@@ -1,0 +1,15 @@
+includes:
+	- phpstan-baseline.neon
+	- vendor/phpstan/phpstan-doctrine/extension.neon
+	- vendor/phpstan/phpstan-doctrine/rules.neon
+	- vendor/phpstan/phpstan-webmozart-assert/extension.neon
+
+parameters:
+	level: max
+	paths:
+		- src
+	# Single baseline shared by the lowest- and highest-deps CI runs - do not fail on unmatched ignored errors
+	reportUnmatchedIgnoredErrors: false
+	ignoreErrors:
+		-
+			identifier: trait.unused

@@ -15,9 +15,11 @@ use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 abstract class ActionFactory implements ActionFactoryInterface
 {
+    /** @var array<string, UrlResolverInterface> */
     protected array $urlResolvers = [];
 
     public function __construct(
@@ -32,7 +34,11 @@ abstract class ActionFactory implements ActionFactoryInterface
 	 */
 	public function getLogger(): LoggerInterface
     {
-        return $this->container->get(LoggerInterface::class);
+        $logger = $this->container->get(LoggerInterface::class);
+
+        Assert::isInstanceOf($logger, LoggerInterface::class);
+
+        return $logger;
     }
 
     public function getUrlResolver(RequestInterface $request): UrlResolverInterface
@@ -46,12 +52,19 @@ abstract class ActionFactory implements ActionFactoryInterface
         return $this->urlResolvers[$hash];
     }
 
+    protected function buildSerializer(\Symfony\Component\Serializer\SerializerInterface $serializer): Serializer
+    {
+        return new Serializer($serializer);
+    }
+
 	/**
 	 * @param array<NormalizerInterface|DenormalizerInterface> $normalizers
 	 * @param array<EncoderInterface|DecoderInterface>         $encoders
+	 *
+	 * @deprecated Use buildSerializer() instead.
 	 */
     protected function createSerializer(array $normalizers = [], array $encoders = []): Serializer
     {
-        return new Serializer(new \Symfony\Component\Serializer\Serializer($normalizers, $encoders));
+        return $this->buildSerializer(new \Symfony\Component\Serializer\Serializer($normalizers, $encoders));
     }
 }
