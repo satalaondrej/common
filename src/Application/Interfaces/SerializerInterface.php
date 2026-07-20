@@ -9,6 +9,8 @@ interface SerializerInterface
 {
 	const LIST_GROUP = 'list';
 
+    const ID_GROUP = 'id';
+
 	public function serialize(object|array|null $data, ?array $groups = null): string;
 
 	/**
@@ -18,5 +20,4 @@ interface SerializerInterface
 	 * @throws DeserializeException
 	 */
 	public function deserialize(string $data, string $className): object|array;
-
 }

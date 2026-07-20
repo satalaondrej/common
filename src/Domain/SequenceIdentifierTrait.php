@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[OA\Schema]
 trait SequenceIdentifierTrait
 {
-	#[Groups([SerializerInterface::LIST_GROUP])]
+	#[Groups([SerializerInterface::LIST_GROUP, SerializerInterface::ID_GROUP])]
 	#[ORM\Column(name: 'id', type: 'integer', length: 10, nullable: false, options: ['unsigned' => true])]
 	#[ORM\Id]
 	#[ORM\GeneratedValue(strategy: 'AUTO')]
